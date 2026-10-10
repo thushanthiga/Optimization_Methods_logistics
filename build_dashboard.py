@@ -30,18 +30,23 @@ html_content = f"""<!DOCTYPE html>
         .master-ui {{
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
             align-items: center;
+            justify-content: center;
             background: #f8f9fa;
             padding: 10px 15px;
             border-radius: 8px;
             border: 1px solid #dee2e6;
         }}
+        .input-group, .btn-group {{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }}
         .master-ui label {{ font-weight: 500; font-size: 14px; }}
-        @media (max-width: 1000px) {{
-            .header {{ flex-direction: column; align-items: stretch; gap: 10px; }}
-            .master-ui {{ justify-content: center; }}
-            .controls {{ justify-content: center; }}
+        @media (max-width: 1100px) {{
+            .header {{ flex-direction: column; align-items: stretch; gap: 15px; }}
+            .master-ui {{ flex-direction: column; width: auto; }}
         }}
     </style>
 </head>
@@ -51,18 +56,22 @@ html_content = f"""<!DOCTYPE html>
         
         <!-- MASTER UI CONTROLS -->
         <div class="master-ui">
-            <label>From:</label>
-            <select id="master_from">
-                {options_html}
-            </select>
+            <div class="input-group">
+                <label>From:</label>
+                <select id="master_from">
+                    {options_html}
+                </select>
+                
+                <label>To:</label>
+                <select id="master_to">
+                    {options_html}
+                </select>
+            </div>
             
-            <label>To:</label>
-            <select id="master_to">
-                {options_html}
-            </select>
-            
-            <button onclick="triggerAnalysis()">Analyze Connection</button>
-            <button class="reset" onclick="triggerReset()">Reset Maps</button>
+            <div class="btn-group">
+                <button onclick="triggerAnalysis()">Analyze Connection</button>
+                <button class="reset" onclick="triggerReset()">Reset Maps</button>
+            </div>
         </div>
 
         <div class="controls">
