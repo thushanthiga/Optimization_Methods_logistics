@@ -173,17 +173,19 @@ def print_and_map_solution(data, manager, routing, solution):
     # Custom HTML/JS overlay
     overlay_html = f"""
     <div id="ui-panel" style="position: fixed; top: 10px; left: 50px; z-index: 9999; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.2); width: 320px;">
-        <h4 style="margin-top: 0;">Point-to-Point Analysis</h4>
-        <label>From Point:</label>
-        <select id="filter_from" style="width: 100%; margin-bottom: 10px;">
-            {options_html}
-        </select>
-        <label>To Point:</label>
-        <select id="filter_to" style="width: 100%; margin-bottom: 10px;">
-            {options_html}
-        </select>
-        <button onclick="applyFilter()" style="width: 100%; padding: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Analyze Connection</button>
-        <button onclick="resetFilter()" style="width: 100%; padding: 5px; margin-top: 5px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Reset Map</button>
+        <div id="ui-controls">
+            <h4 style="margin-top: 0;">Point-to-Point Analysis</h4>
+            <label>From Point:</label>
+            <select id="filter_from" style="width: 100%; margin-bottom: 10px;">
+                {options_html}
+            </select>
+            <label>To Point:</label>
+            <select id="filter_to" style="width: 100%; margin-bottom: 10px;">
+                {options_html}
+            </select>
+            <button onclick="applyFilter()" style="width: 100%; padding: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Analyze Connection</button>
+            <button onclick="resetFilter()" style="width: 100%; padding: 5px; margin-top: 5px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Reset Map</button>
+        </div>
         <div id="filter_msg" style="margin-top: 10px; font-size: 0.9em; color: #333;"></div>
     </div>
     
@@ -547,7 +549,11 @@ def print_and_map_solution(data, manager, routing, solution):
                     }});
             }}
             
-            msg.innerHTML = msgContent;
+            if (msgContent !== "") {{
+                msg.innerHTML = "<div style='background: white; padding: 12px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); pointer-events: auto; max-width: 300px;'>" + msgContent + "</div>";
+            }} else {{
+                msg.innerHTML = "";
+            }}
         }}
         
         function resetFilter() {{
@@ -580,8 +586,14 @@ def print_and_map_solution(data, manager, routing, solution):
             }}
             window.addEventListener('message', function(event) {{
                 if (event.data.action === 'hide_ui') {{
+                    var controls = document.getElementById('ui-controls');
+                    if (controls) controls.style.display = 'none';
                     var panel = document.getElementById('ui-panel');
-                    if (panel) panel.style.display = 'none';
+                    if (panel) {{
+                        panel.style.background = 'transparent';
+                        panel.style.boxShadow = 'none';
+                        panel.style.padding = '0';
+                    }}
                 }} else if (event.data.action === 'analyze') {{
                     document.getElementById('filter_from').value = event.data.from;
                     document.getElementById('filter_to').value = event.data.to;
