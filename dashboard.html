@@ -7,40 +7,100 @@
         .header { background: #fff; padding: 15px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         .header h2 { margin: 0; font-size: 1.2rem; color: #1a1a1a; }
         .controls { display: flex; gap: 15px; align-items: center; }
-        select { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; outline: none; cursor: pointer; }
+        select, button { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; outline: none; cursor: pointer; }
+        button { background: #007bff; color: white; border: none; font-weight: bold; }
+        button.reset { background: #6c757d; }
+        button:hover { opacity: 0.9; }
         .content { flex: 1; display: flex; flex-direction: row; position: relative; }
         .frame-container { flex: 1; position: relative; display: flex; flex-direction: column; border-right: 2px solid #ccc; }
         .frame-container:last-child { border-right: none; }
         .frame-title { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); pointer-events: none; z-index: 10; }
         iframe { width: 100%; height: 100%; border: none; }
+        
+        /* Master UI Panel */
+        .master-ui {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .master-ui label { font-weight: 500; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="header">
         <h2>🚚 Supply Chain Route Optimization Comparison</h2>
+        
+        <!-- MASTER UI CONTROLS -->
+        <div class="master-ui">
+            <label>From:</label>
+            <select id="master_from">
+                <option value=''>-- Select Point --</option><option value='Depot: Colombo'>Depot: Colombo</option><option value='Depot: Galle'>Depot: Galle</option><option value='Depot: Jaffna'>Depot: Jaffna</option><option value='Depot: Kandy'>Depot: Kandy</option><option value='Depot: Trincomalee'>Depot: Trincomalee</option><option value='Market: Agalawatta'>Market: Agalawatta</option><option value='Market: Ambalangoda'>Market: Ambalangoda</option><option value='Market: Ampara'>Market: Ampara</option><option value='Market: Anuradhapura'>Market: Anuradhapura</option><option value='Market: Avissawella'>Market: Avissawella</option><option value='Market: Badulla'>Market: Badulla</option><option value='Market: Bandarawela'>Market: Bandarawela</option><option value='Market: Batticaloa'>Market: Batticaloa</option><option value='Market: Beliatta'>Market: Beliatta</option><option value='Market: Beruwala'>Market: Beruwala</option><option value='Market: Chilaw'>Market: Chilaw</option><option value='Market: Dambulla'>Market: Dambulla</option><option value='Market: Dehiwala'>Market: Dehiwala</option><option value='Market: Dikwella'>Market: Dikwella</option><option value='Market: Elpitiya'>Market: Elpitiya</option><option value='Market: Eppawala'>Market: Eppawala</option><option value='Market: Galewela'>Market: Galewela</option><option value='Market: Gampaha'>Market: Gampaha</option><option value='Market: Gampola'>Market: Gampola</option><option value='Market: Habarana'>Market: Habarana</option><option value='Market: Hambantota'>Market: Hambantota</option><option value='Market: Hatton'>Market: Hatton</option><option value='Market: Hikkaduwa'>Market: Hikkaduwa</option><option value='Market: Homagama'>Market: Homagama</option><option value='Market: Horana'>Market: Horana</option><option value='Market: Ja-Ela'>Market: Ja-Ela</option><option value='Market: Kadugannawa'>Market: Kadugannawa</option><option value='Market: Kaduwela'>Market: Kaduwela</option><option value='Market: Kalutara'>Market: Kalutara</option><option value='Market: Kandana'>Market: Kandana</option><option value='Market: Kataragama'>Market: Kataragama</option><option value='Market: Kegalle'>Market: Kegalle</option><option value='Market: Kekirawa'>Market: Kekirawa</option><option value='Market: Kilinochchi'>Market: Kilinochchi</option><option value='Market: Kuliyapitiya'>Market: Kuliyapitiya</option><option value='Market: Kurunegala'>Market: Kurunegala</option><option value='Market: Maharagama'>Market: Maharagama</option><option value='Market: Maho'>Market: Maho</option><option value='Market: Mannar'>Market: Mannar</option><option value='Market: Matale'>Market: Matale</option><option value='Market: Matara'>Market: Matara</option><option value='Market: Matugama'>Market: Matugama</option><option value='Market: Medawachchiya'>Market: Medawachchiya</option><option value='Market: Middeniya'>Market: Middeniya</option><option value='Market: Minuwangoda'>Market: Minuwangoda</option><option value='Market: Monaragala'>Market: Monaragala</option><option value='Market: Moratuwa'>Market: Moratuwa</option><option value='Market: Mullaitivu'>Market: Mullaitivu</option><option value='Market: Narammala'>Market: Narammala</option><option value='Market: Nawalapitiya'>Market: Nawalapitiya</option><option value='Market: Negombo'>Market: Negombo</option><option value='Market: Nittambuwa'>Market: Nittambuwa</option><option value='Market: Nochchiyagama'>Market: Nochchiyagama</option><option value='Market: Nugegoda'>Market: Nugegoda</option><option value='Market: Nuwara Eliya'>Market: Nuwara Eliya</option><option value='Market: Panadura'>Market: Panadura</option><option value='Market: Polonnaruwa'>Market: Polonnaruwa</option><option value='Market: Puttalam'>Market: Puttalam</option><option value='Market: Ratnapura'>Market: Ratnapura</option><option value='Market: Sigiriya'>Market: Sigiriya</option><option value='Market: Tambuttegama'>Market: Tambuttegama</option><option value='Market: Tangalle'>Market: Tangalle</option><option value='Market: Thalawakele'>Market: Thalawakele</option><option value='Market: Tissamaharama'>Market: Tissamaharama</option><option value='Market: Vavuniya'>Market: Vavuniya</option><option value='Market: Walasmulla'>Market: Walasmulla</option><option value='Market: Wariyapola'>Market: Wariyapola</option><option value='Market: Wattala'>Market: Wattala</option><option value='Market: Wattegama'>Market: Wattegama</option><option value='Market: Weligama'>Market: Weligama</option>
+            </select>
+            
+            <label>To:</label>
+            <select id="master_to">
+                <option value=''>-- Select Point --</option><option value='Depot: Colombo'>Depot: Colombo</option><option value='Depot: Galle'>Depot: Galle</option><option value='Depot: Jaffna'>Depot: Jaffna</option><option value='Depot: Kandy'>Depot: Kandy</option><option value='Depot: Trincomalee'>Depot: Trincomalee</option><option value='Market: Agalawatta'>Market: Agalawatta</option><option value='Market: Ambalangoda'>Market: Ambalangoda</option><option value='Market: Ampara'>Market: Ampara</option><option value='Market: Anuradhapura'>Market: Anuradhapura</option><option value='Market: Avissawella'>Market: Avissawella</option><option value='Market: Badulla'>Market: Badulla</option><option value='Market: Bandarawela'>Market: Bandarawela</option><option value='Market: Batticaloa'>Market: Batticaloa</option><option value='Market: Beliatta'>Market: Beliatta</option><option value='Market: Beruwala'>Market: Beruwala</option><option value='Market: Chilaw'>Market: Chilaw</option><option value='Market: Dambulla'>Market: Dambulla</option><option value='Market: Dehiwala'>Market: Dehiwala</option><option value='Market: Dikwella'>Market: Dikwella</option><option value='Market: Elpitiya'>Market: Elpitiya</option><option value='Market: Eppawala'>Market: Eppawala</option><option value='Market: Galewela'>Market: Galewela</option><option value='Market: Gampaha'>Market: Gampaha</option><option value='Market: Gampola'>Market: Gampola</option><option value='Market: Habarana'>Market: Habarana</option><option value='Market: Hambantota'>Market: Hambantota</option><option value='Market: Hatton'>Market: Hatton</option><option value='Market: Hikkaduwa'>Market: Hikkaduwa</option><option value='Market: Homagama'>Market: Homagama</option><option value='Market: Horana'>Market: Horana</option><option value='Market: Ja-Ela'>Market: Ja-Ela</option><option value='Market: Kadugannawa'>Market: Kadugannawa</option><option value='Market: Kaduwela'>Market: Kaduwela</option><option value='Market: Kalutara'>Market: Kalutara</option><option value='Market: Kandana'>Market: Kandana</option><option value='Market: Kataragama'>Market: Kataragama</option><option value='Market: Kegalle'>Market: Kegalle</option><option value='Market: Kekirawa'>Market: Kekirawa</option><option value='Market: Kilinochchi'>Market: Kilinochchi</option><option value='Market: Kuliyapitiya'>Market: Kuliyapitiya</option><option value='Market: Kurunegala'>Market: Kurunegala</option><option value='Market: Maharagama'>Market: Maharagama</option><option value='Market: Maho'>Market: Maho</option><option value='Market: Mannar'>Market: Mannar</option><option value='Market: Matale'>Market: Matale</option><option value='Market: Matara'>Market: Matara</option><option value='Market: Matugama'>Market: Matugama</option><option value='Market: Medawachchiya'>Market: Medawachchiya</option><option value='Market: Middeniya'>Market: Middeniya</option><option value='Market: Minuwangoda'>Market: Minuwangoda</option><option value='Market: Monaragala'>Market: Monaragala</option><option value='Market: Moratuwa'>Market: Moratuwa</option><option value='Market: Mullaitivu'>Market: Mullaitivu</option><option value='Market: Narammala'>Market: Narammala</option><option value='Market: Nawalapitiya'>Market: Nawalapitiya</option><option value='Market: Negombo'>Market: Negombo</option><option value='Market: Nittambuwa'>Market: Nittambuwa</option><option value='Market: Nochchiyagama'>Market: Nochchiyagama</option><option value='Market: Nugegoda'>Market: Nugegoda</option><option value='Market: Nuwara Eliya'>Market: Nuwara Eliya</option><option value='Market: Panadura'>Market: Panadura</option><option value='Market: Polonnaruwa'>Market: Polonnaruwa</option><option value='Market: Puttalam'>Market: Puttalam</option><option value='Market: Ratnapura'>Market: Ratnapura</option><option value='Market: Sigiriya'>Market: Sigiriya</option><option value='Market: Tambuttegama'>Market: Tambuttegama</option><option value='Market: Tangalle'>Market: Tangalle</option><option value='Market: Thalawakele'>Market: Thalawakele</option><option value='Market: Tissamaharama'>Market: Tissamaharama</option><option value='Market: Vavuniya'>Market: Vavuniya</option><option value='Market: Walasmulla'>Market: Walasmulla</option><option value='Market: Wariyapola'>Market: Wariyapola</option><option value='Market: Wattala'>Market: Wattala</option><option value='Market: Wattegama'>Market: Wattegama</option><option value='Market: Weligama'>Market: Weligama</option>
+            </select>
+            
+            <button onclick="triggerAnalysis()">Analyze Connection</button>
+            <button class="reset" onclick="triggerReset()">Reset Maps</button>
+        </div>
+
         <div class="controls">
-            <label style="font-size: 14px; font-weight: 500;">Select View Mode:</label>
+            <label style="font-size: 14px; font-weight: 500;">View Mode:</label>
             <select id="viewMode" onchange="updateView()">
                 <option value="split">Split Screen Comparison</option>
-                <option value="exact">Exact Solver Only (Person 1)</option>
-                <option value="meta">Metaheuristic Solver Only (Person 2)</option>
+                <option value="exact">Exact Solver (Person 1)</option>
+                <option value="meta">Metaheuristic (Person 2)</option>
             </select>
         </div>
     </div>
     
     <div class="content" id="content">
-        <!-- Split screen setup by default -->
         <div class="frame-container" id="exact-container">
-            <div class="frame-title" style="color: #0056b3;">Person 1: Exact Solver (MD-HVRPTW)</div>
-            <iframe id="frame-exact" src="Person_1/optimization_map.html"></iframe>
+            <div class="frame-title" style="color: #0056b3;">Person 1: Exact Solver</div>
+            <iframe id="frame-exact" src="Person_1/optimization_map.html" onload="hideChildUI(this)"></iframe>
         </div>
         <div class="frame-container" id="meta-container">
             <div class="frame-title" style="color: #b33900;">Person 2: Metaheuristic (GA)</div>
-            <iframe id="frame-meta" src="Person_2/metaheuristic_map.html"></iframe>
+            <iframe id="frame-meta" src="Person_2/metaheuristic_map.html" onload="hideChildUI(this)"></iframe>
         </div>
     </div>
 
     <script>
+        function hideChildUI(iframe) {
+            // Tell the iframe to hide its own UI
+            if (iframe.contentWindow) {
+                iframe.contentWindow.postMessage({ action: 'hide_ui' }, '*');
+            }
+        }
+
+        function triggerAnalysis() {
+            var fromPt = document.getElementById('master_from').value;
+            var toPt = document.getElementById('master_to').value;
+            if (!fromPt || !toPt) {
+                alert("Please select both a start and end point.");
+                return;
+            }
+            
+            var msg = { action: 'analyze', from: fromPt, to: toPt };
+            document.getElementById('frame-exact').contentWindow.postMessage(msg, '*');
+            document.getElementById('frame-meta').contentWindow.postMessage(msg, '*');
+        }
+        
+        function triggerReset() {
+            document.getElementById('master_from').value = '';
+            document.getElementById('master_to').value = '';
+            
+            var msg = { action: 'reset' };
+            document.getElementById('frame-exact').contentWindow.postMessage(msg, '*');
+            document.getElementById('frame-meta').contentWindow.postMessage(msg, '*');
+        }
+
         function updateView() {
             var mode = document.getElementById('viewMode').value;
             var exactContainer = document.getElementById('exact-container');

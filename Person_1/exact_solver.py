@@ -172,7 +172,7 @@ def print_and_map_solution(data, manager, routing, solution):
     
     # Custom HTML/JS overlay
     overlay_html = f"""
-    <div style="position: fixed; top: 10px; left: 50px; z-index: 9999; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.2); width: 320px;">
+    <div id="ui-panel" style="position: fixed; top: 10px; left: 50px; z-index: 9999; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.2); width: 320px;">
         <h4 style="margin-top: 0;">Point-to-Point Analysis</h4>
         <label>From Point:</label>
         <select id="filter_from" style="width: 100%; margin-bottom: 10px;">
@@ -578,6 +578,18 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
                 mapInstance.setView([7.8731, 80.7718], 8);
             }}
+            window.addEventListener('message', function(event) {{
+                if (event.data.action === 'hide_ui') {{
+                    var panel = document.getElementById('ui-panel');
+                    if (panel) panel.style.display = 'none';
+                }} else if (event.data.action === 'analyze') {{
+                    document.getElementById('filter_from').value = event.data.from;
+                    document.getElementById('filter_to').value = event.data.to;
+                    applyFilter();
+                }} else if (event.data.action === 'reset') {{
+                    resetMap();
+                }}
+            }});
         }}
     </script>
     """
