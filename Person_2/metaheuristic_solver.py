@@ -583,7 +583,5 @@ def run_genetic_algorithm():
     print(f"\n[SUCCESS] Interactive Geographic Map saved to: {map_path}")
     print("Open this HTML file in your browser for the presentation!")
 
-
-
-
-    
+if __name__ == '__main__':
+    run_genetic_algorithm()
