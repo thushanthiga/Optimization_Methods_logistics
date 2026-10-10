@@ -264,7 +264,15 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
                 
                 function getIcon(color) {{
-                    var svg = `<svg viewBox="0 0 640 512" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><path fill="${{color}}" stroke="black" stroke-width="15" d="M48 0C21.5 0 0 21.5 0 48l0 368c0 26.5 21.5 48 48 48l16 0c0 44.2 35.8 80 80 80s80-35.8 80-80l160 0c0 44.2 35.8 80 80 80s80-35.8 80-80l32 0c44.2 0 80-35.8 80-80l0-160-224 0 0-208C352 21.5 330.5 0 304 0L48 0zM576 208l0 144c0 8.8-7.2 16-16 16l-32 0c0-44.2-35.8-80-80-80s-80 35.8-80 80l-64 0 0-160 272 0zM144 464a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm304 0a32 32 0 1 1 0-64 32 32 0 1 1 0 64z"/></svg>`;
+                    var isTransfer = (color === '#333333');
+                    var svg;
+                    if (isTransfer) {{
+                        // Package/Box icon
+                        svg = `<svg viewBox="0 0 512 512" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><path fill="#ff9900" stroke="black" stroke-width="15" d="M256 16L31 120.3 256 224l225-103.7L256 16zM31 161.4V375.9L256 480v-214.6L31 161.4zM288 480V265.4L513 161.4V375.9L288 480z"/></svg>`;
+                    }} else {{
+                        // Truck icon
+                        svg = `<svg viewBox="0 0 640 512" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><path fill="${{color}}" stroke="black" stroke-width="15" d="M48 0C21.5 0 0 21.5 0 48l0 368c0 26.5 21.5 48 48 48l16 0c0 44.2 35.8 80 80 80s80-35.8 80-80l160 0c0 44.2 35.8 80 80 80s80-35.8 80-80l32 0c44.2 0 80-35.8 80-80l0-160-224 0 0-208C352 21.5 330.5 0 304 0L48 0zM576 208l0 144c0 8.8-7.2 16-16 16l-32 0c0-44.2-35.8-80-80-80s-80 35.8-80 80l-64 0 0-160 272 0zM144 464a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm304 0a32 32 0 1 1 0-64 32 32 0 1 1 0 64z"/></svg>`;
+                    }}
                     return L.divIcon({{
                         html: "<div style='filter: drop-shadow(2px 2px 2px rgba(255,255,255,0.8)); transform: scaleX(-1); margin-top:-16px; margin-left:-16px;'>" + svg + "</div>",
                         className: '',
@@ -297,8 +305,13 @@ def print_and_map_solution(data, manager, routing, solution):
                     if (expectedTruckIdx >= truckColors.length) expectedTruckIdx = truckColors.length - 1;
                     
                     if (expectedTruckIdx !== lastTruckIdx) {{
-                        window.movingTruckMarker.setIcon(getIcon(truckColors[expectedTruckIdx]));
-                        window.movingTruckMarker.bindPopup("<b>Transferring Goods...</b>").openPopup();
+                        var color = truckColors[expectedTruckIdx];
+                        window.movingTruckMarker.setIcon(getIcon(color));
+                        if (color === '#333333') {{
+                            window.movingTruckMarker.bindPopup("<b>Transferring Goods...</b>").openPopup();
+                        }} else if (lastTruckIdx !== undefined && truckColors[lastTruckIdx] === '#333333') {{
+                            window.movingTruckMarker.bindPopup("<b>Goods Loaded!</b>").openPopup();
+                        }}
                         setTimeout(() => window.movingTruckMarker.closePopup(), 1500);
                         lastTruckIdx = expectedTruckIdx;
                     }}
