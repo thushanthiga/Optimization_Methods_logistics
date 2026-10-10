@@ -170,22 +170,9 @@ def print_and_map_solution(data, manager, routing, solution):
     all_locations = sorted(loc_names)
     options_html = "<option value=''>-- Select Point --</option>" + "".join([f"<option value='{loc}'>{loc}</option>" for loc in all_locations])
     
-    # Custom HTML/JS overlay
+    # Custom HTML/JS overlay (No internal UI, relies on master dashboard)
     overlay_html = f"""
-    <div id="ui-panel" style="position: fixed; top: 10px; left: 50px; z-index: 9999; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.2); width: 320px;">
-        <div id="ui-controls">
-            <h4 style="margin-top: 0;">Point-to-Point Analysis</h4>
-            <label>From Point:</label>
-            <select id="filter_from" style="width: 100%; margin-bottom: 10px;">
-                {options_html}
-            </select>
-            <label>To Point:</label>
-            <select id="filter_to" style="width: 100%; margin-bottom: 10px;">
-                {options_html}
-            </select>
-            <button onclick="applyFilter()" style="width: 100%; padding: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Analyze Connection</button>
-            <button onclick="resetFilter()" style="width: 100%; padding: 5px; margin-top: 5px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Reset Map</button>
-        </div>
+    <div id="ui-panel" style="position: fixed; top: 10px; left: 50px; z-index: 9999; pointer-events: none;">
         <div id="filter_msg" style="margin-top: 10px; font-size: 0.9em; color: #333;"></div>
     </div>
     
@@ -207,9 +194,7 @@ def print_and_map_solution(data, manager, routing, solution):
             }}
         }}, 1000);
 
-        function applyFilter() {{
-            var fromPt = document.getElementById('filter_from').value;
-            var toPt = document.getElementById('filter_to').value;
+        function applyFilter(fromPt, toPt) {{
             var msg = document.getElementById('filter_msg');
             msg.innerHTML = "Calculating true road route...";
             
@@ -587,39 +572,15 @@ def print_and_map_solution(data, manager, routing, solution):
             
             // AUTOMATIC URL PARAMETER PARSING
             var urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('hide_ui') === '1' || window !== window.parent) {{
-                var controls = document.getElementById('ui-controls');
-                if (controls) controls.style.display = 'none';
-                var panel = document.getElementById('ui-panel');
-                if (panel) {{
-                    panel.style.background = 'transparent';
-                    panel.style.boxShadow = 'none';
-                    panel.style.padding = '0';
-                }}
-            }}
-            
             var urlFrom = urlParams.get('from');
             var urlTo = urlParams.get('to');
             if (urlFrom && urlTo) {{
-                document.getElementById('filter_from').value = urlFrom;
-                document.getElementById('filter_to').value = urlTo;
-                applyFilter();
+                applyFilter(urlFrom, urlTo);
             }}
             
             window.addEventListener('message', function(event) {{
-                if (event.data.action === 'hide_ui') {{
-                    var controls = document.getElementById('ui-controls');
-                    if (controls) controls.style.display = 'none';
-                    var panel = document.getElementById('ui-panel');
-                    if (panel) {{
-                        panel.style.background = 'transparent';
-                        panel.style.boxShadow = 'none';
-                        panel.style.padding = '0';
-                    }}
-                }} else if (event.data.action === 'analyze') {{
-                    document.getElementById('filter_from').value = event.data.from;
-                    document.getElementById('filter_to').value = event.data.to;
-                    applyFilter();
+                if (event.data.action === 'analyze') {{
+                    applyFilter(event.data.from, event.data.to);
                 }} else if (event.data.action === 'reset') {{
                     resetMap();
                 }}
