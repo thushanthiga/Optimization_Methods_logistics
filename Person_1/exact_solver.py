@@ -584,6 +584,28 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
                 mapInstance.setView([7.8731, 80.7718], 8);
             }}
+            
+            // AUTOMATIC URL PARAMETER PARSING
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('hide_ui') === '1' || window !== window.parent) {{
+                var controls = document.getElementById('ui-controls');
+                if (controls) controls.style.display = 'none';
+                var panel = document.getElementById('ui-panel');
+                if (panel) {{
+                    panel.style.background = 'transparent';
+                    panel.style.boxShadow = 'none';
+                    panel.style.padding = '0';
+                }}
+            }}
+            
+            var urlFrom = urlParams.get('from');
+            var urlTo = urlParams.get('to');
+            if (urlFrom && urlTo) {{
+                document.getElementById('filter_from').value = urlFrom;
+                document.getElementById('filter_to').value = urlTo;
+                applyFilter();
+            }}
+            
             window.addEventListener('message', function(event) {{
                 if (event.data.action === 'hide_ui') {{
                     var controls = document.getElementById('ui-controls');

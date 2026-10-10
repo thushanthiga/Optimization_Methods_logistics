@@ -20,7 +20,8 @@
         /* Master UI Panel */
         .master-ui {
             display: flex;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
             align-items: center;
             background: #f8f9fa;
             padding: 10px 15px;
@@ -28,11 +29,16 @@
             border: 1px solid #dee2e6;
         }
         .master-ui label { font-weight: 500; font-size: 14px; }
+        @media (max-width: 1000px) {
+            .header { flex-direction: column; align-items: stretch; gap: 10px; }
+            .master-ui { justify-content: center; }
+            .controls { justify-content: center; }
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h2>🚚 Supply Chain Route Optimization Comparison</h2>
+        <h2 style="text-align: center; margin-bottom: 5px;">🚚 Supply Chain Comparison</h2>
         
         <!-- MASTER UI CONTROLS -->
         <div class="master-ui">
@@ -63,22 +69,15 @@
     <div class="content" id="content">
         <div class="frame-container" id="exact-container">
             <div class="frame-title" style="color: #0056b3;">Person 1: Exact Solver</div>
-            <iframe id="frame-exact" src="Person_1/optimization_map.html" onload="hideChildUI(this)"></iframe>
+            <iframe id="frame-exact" src="Person_1/optimization_map.html?hide_ui=1"></iframe>
         </div>
         <div class="frame-container" id="meta-container">
             <div class="frame-title" style="color: #b33900;">Person 2: Metaheuristic (GA)</div>
-            <iframe id="frame-meta" src="Person_2/metaheuristic_map.html" onload="hideChildUI(this)"></iframe>
+            <iframe id="frame-meta" src="Person_2/metaheuristic_map.html?hide_ui=1"></iframe>
         </div>
     </div>
 
     <script>
-        function hideChildUI(iframe) {
-            // Tell the iframe to hide its own UI
-            if (iframe.contentWindow) {
-                iframe.contentWindow.postMessage({ action: 'hide_ui' }, '*');
-            }
-        }
-
         function triggerAnalysis() {
             var fromPt = document.getElementById('master_from').value;
             var toPt = document.getElementById('master_to').value;
@@ -86,19 +85,19 @@
                 alert("Please select both a start and end point.");
                 return;
             }
+            var exactFrame = document.getElementById('frame-exact');
+            var metaFrame = document.getElementById('frame-meta');
             
-            var msg = { action: 'analyze', from: fromPt, to: toPt };
-            document.getElementById('frame-exact').contentWindow.postMessage(msg, '*');
-            document.getElementById('frame-meta').contentWindow.postMessage(msg, '*');
+            var params = "?hide_ui=1&from=" + encodeURIComponent(fromPt) + "&to=" + encodeURIComponent(toPt);
+            exactFrame.src = "Person_1/optimization_map.html" + params;
+            metaFrame.src = "Person_2/metaheuristic_map.html" + params;
         }
         
         function triggerReset() {
             document.getElementById('master_from').value = '';
             document.getElementById('master_to').value = '';
-            
-            var msg = { action: 'reset' };
-            document.getElementById('frame-exact').contentWindow.postMessage(msg, '*');
-            document.getElementById('frame-meta').contentWindow.postMessage(msg, '*');
+            document.getElementById('frame-exact').src = "Person_1/optimization_map.html?hide_ui=1";
+            document.getElementById('frame-meta').src = "Person_2/metaheuristic_map.html?hide_ui=1";
         }
 
         function updateView() {
