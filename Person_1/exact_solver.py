@@ -247,6 +247,16 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
             }}
             
+            if (fromPt === toPt) {{
+                msg.innerHTML = "<strong>Direct API Data:</strong><br/>Distance: 0 km<br/>Time: 0 mins<br/><br/><strong style='color:#28a745;'>✓ You are already at the destination!</strong>";
+                if (mapInstance) {{
+                    var coords = [locCoords[fromPt][1], locCoords[fromPt][0]];
+                    startMarker = L.marker(coords, {{title: fromPt}}).bindPopup("<b>" + fromPt + "</b>").addTo(mapInstance);
+                    mapInstance.setView(coords, 13);
+                }}
+                return;
+            }}
+            
             function animateTruckAlong(latlngs, truckColors) {{
                 if (!truckColors || truckColors.length === 0) truckColors = ['#007bff'];
                 if (window.movingTruckMarker && mapInstance) {{
