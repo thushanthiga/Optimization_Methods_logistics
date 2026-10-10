@@ -308,7 +308,7 @@ def print_and_map_solution(data, manager, routing, solution):
                         var color = truckColors[expectedTruckIdx];
                         window.movingTruckMarker.setIcon(getIcon(color));
                         if (color === '#333333') {{
-                            window.movingTruckMarker.bindPopup("<b>Transferring Goods...</b>").openPopup();
+                            window.movingTruckMarker.bindPopup("<b>3rd Party Courier in transit...</b>").openPopup();
                         }} else if (lastTruckIdx !== undefined && truckColors[lastTruckIdx] === '#333333') {{
                             window.movingTruckMarker.bindPopup("<b>Goods Loaded!</b>").openPopup();
                         }}
@@ -504,7 +504,7 @@ def print_and_map_solution(data, manager, routing, solution):
                 msgContent += "<span style='color: #28a745;'><strong>✓ Optimal Multi-Hop Relay Found</strong></span><br/>";
                 msgContent += "<div style='font-size:0.9em; padding:5px; background:#f8f9fa; border:1px solid #ddd; border-radius:4px;'>";
                 msgContent += "<span style='color:" + bestFromTruck.color + "; font-weight:bold;'>Truck " + bestFromTruck.vehicle + "</span> (" + fromPt + " ➔ " + bestFromNode.name + ")<br/>";
-                msgContent += "⬇️ <i>Transfer Gap (Distance: " + bestDist.toFixed(1) + " km)</i><br/>";
+                msgContent += "⬇️ <i>3rd-Party Courier Link (Distance: " + bestDist.toFixed(1) + " km)</i><br/>";
                 msgContent += "<span style='color:" + bestToTruck.color + "; font-weight:bold;'>Truck " + bestToTruck.vehicle + "</span> (" + bestToNode.name + " ➔ " + toPt + ")</div>";
                 
                 startMarker = L.marker([locCoords[fromPt][1], locCoords[fromPt][0]], {{title: fromPt}}).bindPopup("<b>From: </b>" + fromPt).addTo(mapInstance);
