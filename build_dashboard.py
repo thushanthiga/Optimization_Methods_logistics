@@ -9,6 +9,7 @@ options_html = "<option value=''>-- Select Point --</option>" + "".join([f"<opti
 html_content = f"""<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Logistics Optimization Comparison</title>
     <style>
         body {{ margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: #f0f2f5; }}
