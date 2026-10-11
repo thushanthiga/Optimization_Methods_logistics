@@ -68,9 +68,16 @@ map_code = f"""
     options_html = "<option value=''>-- Select Point --</option>" + "".join([f"<option value='{{loc}}'>{{loc}}</option>" for loc in all_locations])
     
     {js_code.replace('optimization_map.html', 'metaheuristic_map.html')}
+    
+if __name__ == '__main__':
+    run_genetic_algorithm()
 """
 
-meta_code = meta_code.replace('print(f"Total Distance Found via GA: {best_distance} km")', 'print(f"Total Distance Found via GA: {best_distance} km")\n' + map_code)
+if "# --- GEOSPATIAL VISUALIZATION ---" not in meta_code:
+    meta_code = meta_code.replace('print(f"Total Distance Found via GA: {best_distance} km")', 'print(f"Total Distance Found via GA: {best_distance} km")\n' + map_code)
+else:
+    meta_code = meta_code.split("# --- GEOSPATIAL VISUALIZATION ---")[0]
+    meta_code += map_code
 
 with open("Person_2/metaheuristic_solver.py", "w") as f:
     f.write(meta_code)

@@ -184,15 +184,6 @@ def print_and_map_solution(data, manager, routing, solution):
         var customLine = null;
         var startMarker = null;
         var endMarker = null;
-        
-        setTimeout(function() {{
-            for (var key in window) {{
-                if (window[key] && window[key] instanceof L.Map) {{
-                    mapInstance = window[key];
-                    break;
-                }}
-            }}
-        }}, 1000);
 
         function applyFilter(fromPt, toPt) {{
             var msg = document.getElementById('filter_msg');
@@ -569,15 +560,22 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
                 mapInstance.setView([7.8731, 80.7718], 8);
             }}
-        }}
+        setTimeout(function() {{
+            for (var key in window) {{
+                if (window[key] && window[key] instanceof L.Map) {{
+                    mapInstance = window[key];
+                    break;
+                }}
+            }}
             
-        // AUTOMATIC URL PARAMETER PARSING
-        var urlParams = new URLSearchParams(window.location.search);
-        var urlFrom = urlParams.get('from');
-        var urlTo = urlParams.get('to');
-        if (urlFrom && urlTo) {{
-            applyFilter(urlFrom, urlTo);
-        }}
+            // AUTOMATIC URL PARAMETER PARSING
+            var urlParams = new URLSearchParams(window.location.search);
+            var urlFrom = urlParams.get('from');
+            var urlTo = urlParams.get('to');
+            if (urlFrom && urlTo) {{
+                applyFilter(urlFrom, urlTo);
+            }}
+        }}, 1000);
         
         window.addEventListener('message', function(event) {{
             if (event.data.action === 'analyze') {{
