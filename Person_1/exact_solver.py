@@ -560,7 +560,7 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
                 mapInstance.setView([7.8731, 80.7718], 8);
             }}
-        setTimeout(function() {{
+        function initAndApply() {{
             for (var key in window) {{
                 if (window[key] && window[key] instanceof L.Map) {{
                     mapInstance = window[key];
@@ -568,14 +568,19 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
             }}
             
-            // AUTOMATIC URL PARAMETER PARSING
-            var urlParams = new URLSearchParams(window.location.search);
-            var urlFrom = urlParams.get('from');
-            var urlTo = urlParams.get('to');
-            if (urlFrom && urlTo) {{
-                applyFilter(urlFrom, urlTo);
+            if (mapInstance) {{
+                // AUTOMATIC URL PARAMETER PARSING
+                var urlParams = new URLSearchParams(window.location.search);
+                var urlFrom = urlParams.get('from');
+                var urlTo = urlParams.get('to');
+                if (urlFrom && urlTo) {{
+                    applyFilter(urlFrom, urlTo);
+                }}
+            }} else {{
+                setTimeout(initAndApply, 200); // Check again in 200ms
             }}
-        }}, 1000);
+        }}
+        initAndApply();
         
         window.addEventListener('message', function(event) {{
             if (event.data.action === 'analyze') {{
