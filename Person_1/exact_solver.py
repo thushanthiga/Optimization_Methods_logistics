@@ -569,23 +569,23 @@ def print_and_map_solution(data, manager, routing, solution):
                 }}
                 mapInstance.setView([7.8731, 80.7718], 8);
             }}
-            
-            // AUTOMATIC URL PARAMETER PARSING
-            var urlParams = new URLSearchParams(window.location.search);
-            var urlFrom = urlParams.get('from');
-            var urlTo = urlParams.get('to');
-            if (urlFrom && urlTo) {{
-                applyFilter(urlFrom, urlTo);
-            }}
-            
-            window.addEventListener('message', function(event) {{
-                if (event.data.action === 'analyze') {{
-                    applyFilter(event.data.from, event.data.to);
-                }} else if (event.data.action === 'reset') {{
-                    resetMap();
-                }}
-            }});
         }}
+            
+        // AUTOMATIC URL PARAMETER PARSING
+        var urlParams = new URLSearchParams(window.location.search);
+        var urlFrom = urlParams.get('from');
+        var urlTo = urlParams.get('to');
+        if (urlFrom && urlTo) {{
+            applyFilter(urlFrom, urlTo);
+        }}
+        
+        window.addEventListener('message', function(event) {{
+            if (event.data.action === 'analyze') {{
+                applyFilter(event.data.from, event.data.to);
+            }} else if (event.data.action === 'reset') {{
+                resetFilter();
+            }}
+        }});
     </script>
     """
     
