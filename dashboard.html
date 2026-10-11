@@ -98,8 +98,10 @@
             var exactFrame = document.getElementById('frame-exact');
             var metaFrame = document.getElementById('frame-meta');
             
-            exactFrame.contentWindow.postMessage({action: 'analyze', from: fromPt, to: toPt}, '*');
-            metaFrame.contentWindow.postMessage({action: 'analyze', from: fromPt, to: toPt}, '*');
+            var ts = new Date().getTime();
+            var params = "?hide_ui=1&from=" + encodeURIComponent(fromPt) + "&to=" + encodeURIComponent(toPt) + "&t=" + ts;
+            exactFrame.src = "Person_1/optimization_map.html" + params;
+            metaFrame.src = "Person_2/metaheuristic_map.html" + params;
         }
         
         function triggerReset() {
@@ -107,8 +109,10 @@
             document.getElementById('master_to').value = '';
             var exactFrame = document.getElementById('frame-exact');
             var metaFrame = document.getElementById('frame-meta');
-            exactFrame.contentWindow.postMessage({action: 'reset'}, '*');
-            metaFrame.contentWindow.postMessage({action: 'reset'}, '*');
+            
+            var ts = new Date().getTime();
+            exactFrame.src = "Person_1/optimization_map.html?hide_ui=1&t=" + ts;
+            metaFrame.src = "Person_2/metaheuristic_map.html?hide_ui=1&t=" + ts;
         }
 
         function updateView() {
