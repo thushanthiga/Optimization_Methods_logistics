@@ -110,6 +110,7 @@ def run_genetic_algorithm():
 
     
     
+    
     # --- GEOSPATIAL VISUALIZATION ---
     import folium
     import json
@@ -521,9 +522,8 @@ def run_genetic_algorithm():
         }}
         
         function resetFilter() {{
-            document.getElementById('filter_from').value = "";
-            document.getElementById('filter_to').value = "";
-            document.getElementById('filter_msg').innerHTML = "";
+            var msg = document.getElementById('filter_msg');
+            if (msg) msg.innerHTML = "";
             
             if (customLine && mapInstance) {{
                 mapInstance.removeLayer(customLine);
@@ -548,6 +548,8 @@ def run_genetic_algorithm():
                 }}
                 mapInstance.setView([7.8731, 80.7718], 8);
             }}
+        }}
+
         function initAndApply() {{
             for (var key in window) {{
                 if (window[key] && window[key] instanceof L.Map) {{
